@@ -10,7 +10,7 @@ import FSPagerView
 
 class ViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDelegate {
     
-    fileprivate let imageNames = ["1", "2", "3", "4"]
+    fileprivate let imageNames = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg"]
 
     @IBOutlet weak var myPagerView: FSPagerView! {
         didSet {
@@ -21,7 +21,7 @@ class ViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDelega
             // 무한스크롤 설정
             self.myPagerView.isInfinite = true
             // 스크롤 타임 설정
-            self.myPagerView.automaticSlidingInterval = 4.0
+            //self.myPagerView.automaticSlidingInterval = 4.0
         }
     }
     
@@ -65,14 +65,15 @@ class ViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDelega
     @IBAction func onRightBtnClicked(_ sender: Any) {
         print("ViewController - onRightBtnClicked() called")
         
-        self.myPageControl.currentPage = self.myPageControl.currentPage + 1
         // 아웃오브레인지 에러가 나기 때문에 조건걸기 (currentPage의 수가 imageNames의 수를 넘어가면 에러남)
         if (self.myPageControl.currentPage == self.imageNames.count - 1) {
             self.myPageControl.currentPage = 0
         }
         else {
-            self.myPagerView.scrollToItem(at: self.myPageControl.currentPage, animated: true)
+            self.myPageControl.currentPage = self.myPageControl.currentPage + 1
         }
+        
+        self.myPagerView.scrollToItem(at: self.myPageControl.currentPage, animated: true)
     }
 
     // MARK: - FSPagerView DataSource
@@ -83,8 +84,10 @@ class ViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDelega
     func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
         let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
         print("imageNames: \(imageNames[index])")
+        print("image: \(UIImage(named: imageNames[index]))")
         cell.imageView?.image = UIImage(named: imageNames[index])
         cell.imageView?.contentMode = .scaleAspectFit
+        print(cell)
         return cell
     }
 
